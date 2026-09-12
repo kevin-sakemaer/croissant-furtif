@@ -6,7 +6,7 @@ Il est initialisé lors de la phase de **Bootstrap** (via les skills `1-ideation
 ---
 
 ## 🎯 Statut du Socle Technique
-*Statut actuel : En attente du premier cycle d'idéation et de sélection d'architecture.*
+*Statut actuel : Validé et en cours de déploiement (Option Zig + Svelte 5).*
 
 ---
 
@@ -14,13 +14,13 @@ Il est initialisé lors de la phase de **Bootstrap** (via les skills `1-ideation
 
 | Élément | Choix Technologique | Justification / Notes |
 | :--- | :--- | :--- |
-| **Langage & Runtime** | *À définir* (ex: TypeScript / Node, Go, Python) | |
-| **Framework Web** | *À définir* (ex: Fastify, Express, Gin, FastAPI) | |
-| **Base de Données** | *À définir* (ex: PostgreSQL, SQLite, Redis) | |
-| **ORM / Accès Données**| *À définir* (ex: Prisma, Drizzle, GORM, SQLAlchemy)| |
-| **Validation Schéma** | *À définir* (ex: Zod, TypeBox, Pydantic) | |
-| **Framework de Tests** | *À définir* (ex: Vitest, Jest, `go test`, Pytest) | Commande : `<test-command>` |
-| **Linter & Formatter** | *À définir* (ex: ESLint, Biome, Ruff, Golangci) | Commande : `<lint-command>` |
+| **Langage & Runtime** | **Zig 0.15+** | Performances natives extrêmes, allocateurs mémoires explicites (`std.heap.ArenaAllocator`), binaire autonome sans runtime externe. |
+| **Framework Web** | **Zig Native Standard Library / httpz** | Relais aveugle léger (*dumb relay*), zéro dépendance lourde, transport WebSocket & HTTP épuré. |
+| **Base de Données** | **In-Memory Volatile (Zero Persistence)** | Pas de base de données disque. Tables de hachage volatiles (`std.StringHashMap`) en mémoire vive avec purge TTL automatique et écrasement physique `@memset` (Burn-on-Read). |
+| **ORM / Accès Données**| **Aucun** | Le serveur n'a aucune persistance et ne manipule que des enveloppes chiffrées opaques sans inspection. |
+| **Validation Schéma** | **Zig Structs & `std.json`** | Désérialisation stricte des enveloppes `{ type, room, payload, nonce }`. |
+| **Framework de Tests** | **`zig build test`** | Commande : `cd server && zig build test` |
+| **Linter & Formatter** | **`zig fmt`** | Commande : `cd server && zig fmt --check src/` |
 
 ---
 
@@ -28,13 +28,13 @@ Il est initialisé lors de la phase de **Bootstrap** (via les skills `1-ideation
 
 | Élément | Choix Technologique | Justification / Notes |
 | :--- | :--- | :--- |
-| **Langage** | *À définir* (ex: TypeScript) | |
-| **Framework UI** | *À définir* (ex: React, Next.js, Vue, Svelte) | |
-| **Composants & CSS** | *À définir* (ex: Tailwind CSS, Radix UI, Shadcn) | |
-| **State Management** | *À définir* (ex: Zustand, TanStack Query, Redux) | |
-| **Client HTTP / API** | *À définir* (ex: Fetch natif, Axios, orval) | |
-| **Framework de Tests** | *À définir* (ex: Vitest + Testing Library, Playwright)| Commande : `<test-command>` |
-| **Linter & Formatter** | *À définir* (ex: ESLint, Prettier, Biome) | Commande : `<lint-command>` |
+| **Langage** | **TypeScript 5+** | Typage strict pour l'orchestration des flux cryptographiques et de l'état de l'application. |
+| **Framework UI** | **Svelte 5** | Réactivité native via les Runes (`$state`, `$derived`), compilation sans Virtual DOM, bundle ultra-compact (< 20KB). |
+| **Composants & CSS** | **Tailwind CSS v4** | Utilitaire CSS ultra-rapide et responsive, sans surcharge de runtime. |
+| **State Management** | **Svelte Stores / Runes + IndexedDB** | Gestion d'état locale éphémère et trousseau local chiffré. |
+| **Client Cryptographique & Relais**| **Web Crypto API native + WebSocket** | Chiffrement ECDH X25519 & AES-256-GCM natif navigateur, client WebSocket léger. |
+| **Framework de Tests** | **Vitest + @testing-library/svelte** | Commande : `cd client && pnpm test` |
+| **Linter & Formatter** | **Biome** | Commande : `cd client && npx @biomejs/biome check .` |
 
 ---
 
@@ -43,8 +43,24 @@ Il est initialisé lors de la phase de **Bootstrap** (via les skills `1-ideation
 ```text
 croissant-furtif/
 ├── .agents/skills/      # Compétences du workflow SDLC
+├── client/              # Application Frontend Svelte 5 (UI, Web Crypto API, client WebSocket)
+│   ├── src/
+│   │   ├── lib/
+│   │   │   ├── crypto/  # Primitives cryptographiques Web Crypto API
+│   │   │   └── relay/   # Client WebSocket vers le relais
+│   │   ├── App.svelte
+│   │   └── main.ts
+│   ├── package.json
+│   └── vite.config.ts
+├── server/              # Serveur Backend Relais Aveugle en Zig 0.15+
+│   ├── src/
+│   │   ├── main.zig     # Point d'entrée exécutable du serveur relais
+│   │   ├── root.zig     # Bibliothèque du relais
+│   │   ├── session.zig  # Gestion mémoire volatile des salons & Burn-on-Read
+│   │   └── relay.zig    # Traitement des paquets et enveloppes opaques
+│   ├── build.zig
+│   └── build.zig.zon
 ├── docs/                # Documentation technique
-├── ...                  # Code source (arborescence définie lors du choix de stack)
 ├── ARCHITECTURE.md      # Ce document (source de vérité technique)
 ├── README.md            # Présentation générale
 └── VISION.md            # Vision produit et stratégique
@@ -54,5 +70,5 @@ croissant-furtif/
 
 ## 🛡️ 4. Outils Qualité & Sécurité
 
-- **Scanner de Vulnérabilités** : `<security-audit-command>` (ex: `npm audit`, `pip-audit`, `govulncheck`)
-- **Vérification Statique** : `<typecheck-command>` (ex: `tsc --noEmit`, `mypy`)
+- **Scanner de Vulnérabilités & Audit Mémoire** : `git grep -iE 'TODO|FIXME|allocator.leak' server/` & `cd client && pnpm audit`
+- **Vérification Statique** : `cd server && zig build test` & `cd client && pnpm check`
