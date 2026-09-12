@@ -2,7 +2,19 @@
 
 Processus de développement logiciel (SDLC) autonome piloté par des compétences (**skills**) Antigravity.
 
-Ce workflow utilise **exclusivement les commandes CLI `git` et GitHub (`gh`)**, sans aucun script customisé, pour garantir une portabilité maximale, une traçabilité totale sur GitHub et une isolation rigoureuse du code via Git worktrees.
+Ce workflow utilise **exclusivement les commandes CLI standard `git` et GitHub (`gh`)**, sans aucun script customisé, pour garantir une portabilité maximale, une traçabilité totale sur GitHub et une isolation rigoureuse du code via Git worktrees.
+
+---
+
+## 🚦 Règle de Priorité Stricte
+
+Les issues en attente de développement sont traitées selon un ordre hiérarchique strict :
+
+$$\mathbf{bug} \succ \mathbf{security} \succ \mathbf{ideation}$$
+
+1. **🔴 Priorité 1 — Bugs (`label: bug`)** : Tout bug bloquant ou anomalie signalée passe systématiquement en priorité absolue pour garantir la stabilité de l'application.
+2. **🛡️ Priorité 2 — Sécurité (`label: security`)** : Les vulnérabilités détectées par le skill `audit-security` ou rapportées sont traitées immédiatement avant toute nouvelle fonctionnalité.
+3. **💡 Priorité 3 — Idéation (`label: ideation` / `refined`)** : Les nouvelles fonctionnalités et améliorations architecturales issues de `VISION.md`.
 
 ---
 
@@ -11,8 +23,15 @@ Ce workflow utilise **exclusivement les commandes CLI `git` et GitHub (`gh`)**, 
 ```mermaid
 flowchart TD
     V[VISION.md] --> S1[1-ideation]
-    S1 -->|Tag: ideation| S2[2-refinement]
+    SecExpert([audit-security]) -->|Tag: security| S2[2-refinement]
+    BugReport([Signalement Bug]) -->|Tag: bug| S2
+    S1 -->|Tag: ideation| S2
     S2 -->|Tag: refined| S3[3-selection]
+    subgraph Priorisation ["3-selection (Ordre de priorité)"]
+        P1[1. bug]
+        P2[2. security]
+        P3[3. ideation]
+    end
     S3 -->|Tag: selected| S4[4-design]
     S4 -->|Tag: ready-to-spec| S5[5-specification]
     S5 -->|Tag: spec-approved| S6[6-dev-backend]
@@ -26,15 +45,16 @@ flowchart TD
 
 ---
 
-## 🛠️ Les 11 Skills du Workflow
+## 🛠️ Les Skills du Workflow
 
-Toutes les compétences se trouvent dans le répertoire `.agents/skills/` :
+Toutes les compétences sont situées dans `.agents/skills/` :
 
 | Étape | Skill | Objectif | Outils CLI |
 | :--- | :--- | :--- | :--- |
-| **1** | [`1-ideation`](.agents/skills/1-ideation/SKILL.md) | Analyse `VISION.md` et propose 3 idées variées sous forme d'issues GitHub (`label: ideation`). | `gh issue create`, `gh label create` |
-| **2** | [`2-refinement`](.agents/skills/2-refinement/SKILL.md) | Cadrage approfondi, étude de faisabilité et passage en `refined`. | `gh issue list`, `gh issue edit` |
-| **3** | [`3-selection`](.agents/skills/3-selection/SKILL.md) | Comparatif et sélection de la prochaine issue prioritaire à développer (`label: selected`). | `gh issue list`, `gh issue edit` |
+| **Audit** | [`audit-security`](.agents/skills/audit-security/SKILL.md) | Audit de sécurité périodique (secrets, failles, dépendances) et création d'issues `security`. | `git grep`, `git log`, `gh issue create` |
+| **1** | [`1-ideation`](.agents/skills/1-ideation/SKILL.md) | Propose 3 idées variées issues de `VISION.md` sous forme d'issues GitHub (`label: ideation`). | `gh issue create`, `gh label create` |
+| **2** | [`2-refinement`](.agents/skills/2-refinement/SKILL.md) | Cadrage approfondi des bugs, failles ou idées et qualification en `refined`. | `gh issue list`, `gh issue edit` |
+| **3** | [`3-selection`](.agents/skills/3-selection/SKILL.md) | Sélection par priorité stricte (`bug > security > ideation`) et passage en `selected`. | `gh issue list`, `gh issue edit` |
 | **4** | [`4-design`](.agents/skills/4-design/SKILL.md) | Conception UI/UX si nécessaire (parcours, états, mockups) et passage en `ready-to-spec`. | `gh issue comment`, `gh issue edit` |
 | **5** | [`5-specification`](.agents/skills/5-specification/SKILL.md) | Rédaction des spécifications séparées Backend et Frontend (`label: spec-approved`). | `gh issue comment`, `gh issue edit` |
 | **6** | [`6-dev-backend`](.agents/skills/6-dev-backend/SKILL.md) | Implémentation Backend dans un Git worktree dédié et ouverture de la PR. | `git worktree`, `git commit`, `gh pr create` |
