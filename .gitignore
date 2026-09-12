@@ -12,6 +12,12 @@ dist/
 build/
 .cache/
 
+# Zig
+.zig-cache/
+zig-out/
+server/.zig-cache/
+server/zig-out/
+
 # Logs
 *.log
 npm-debug.log*
