@@ -42,9 +42,10 @@ Adapt the refinement depth to the issue type:
 
 #### A. For `ideation` issues:
 1. **Scope Boundaries**: In-scope vs explicitly out-of-scope.
-2. **Technical Feasibility**: Architecture decisions, affected components, dependencies.
-3. **UI/UX Need**: Is design required (Step 4) or is it headless?
-4. **Acceptance Criteria**: Testable user stories and edge cases.
+2. **Immediate Feasibility & Prerequisites**: Does this issue build directly on already merged code? If it requires multiple unbuilt foundations or a 40-step prerequisite chain, de-scope or break it down into the immediate, standalone next brick.
+3. **Technical Feasibility**: Architecture decisions, affected components, dependencies.
+4. **UI/UX Need**: Is design required (Step 4) or is it headless?
+5. **Acceptance Criteria**: Testable user stories and edge cases.
 
 #### B. For `security` issues:
 1. **Threat Model & Severity**: Attack vector, CVSS / severity rating, affected endpoints/files.
