@@ -1,11 +1,13 @@
 ---
-name: 4-design
-description: Designs the UI/UX for selected issues if required (wireframes, user flow, component states) or determines that no UI/UX is needed, then marks the issue as 'ready-to-spec'. Use this skill when shaping user interface and interaction patterns.
+name: 3-design
+description: Designs the UI/UX for refined issues if required (wireframes, user flow, component states) or determines that no UI/UX is needed, then advances the issue to 'ready-to-spec' by swapping the stage tag. Use this skill when shaping user interface and interaction patterns.
 ---
 
-# Skill: 4-design
+# Skill: 3-design
 
-This skill takes an issue that has been selected (`label: selected`), assesses whether user interface or user experience work is required, designs the visual and interaction specifications (or explicitly documents the absence of UI need), and transitions the issue to `ready-to-spec`.
+This skill takes an issue that has been refined (`label: refined`), assesses whether user interface or user experience work is required, designs the visual and interaction specifications (or explicitly documents the absence of UI need), and transitions the issue to `ready-to-spec`.
+
+> **Strict Tagging Rule**: An issue must carry **exactly ONE stage tag at a time** (`ideation` -> `refined` -> `ready-to-spec` -> `spec-approved` -> `dev-backend` -> `dev-frontend`). The previous stage tag (`refined`) is removed when adding `ready-to-spec`.
 
 > **Constraint**: Uses exclusively standard `git` and GitHub CLI (`gh`) commands. No custom scripts.
 
@@ -13,14 +15,14 @@ This skill takes an issue that has been selected (`label: selected`), assesses w
 
 ## Workflow Steps
 
-### Step 1: Identify the Selected Issue
-Locate issues tagged with `selected`:
+### Step 1: Identify Refined Issue
+Locate issues tagged with `refined`:
 
 ```bash
-gh issue list --label "selected"
+gh issue list --label "refined"
 ```
 
-If multiple issues exist or a specific issue number is passed, view its full description and refinement notes:
+If a specific issue number is passed, view its full description and refinement notes:
 
 ```bash
 gh issue view <id> --comments
@@ -29,7 +31,7 @@ gh issue view <id> --comments
 ### Step 2: Determine UI/UX Requirement
 Check the refinement notes:
 - **UI/UX Needed**: The feature involves user-facing pages, dialogs, forms, components, CLI interactive flows, or visual layouts.
-- **No UI/UX Needed**: The feature is pure backend, data processing, architectural refactor, or headless automation.
+- **No UI/UX Needed**: The feature is pure backend, data processing, architectural foundation, or headless automation.
 
 ---
 
@@ -87,17 +89,17 @@ No visual UI/UX design is required for this scope."
 
 ---
 
-### Step 4: Ensure Label Exists & Transition
+### Step 4: Ensure Label Exists & Single Stage Transition
 Create the `ready-to-spec` label if it does not exist:
 
 ```bash
-gh label create ready-to-spec --description "Design phase complete or exempt, ready for technical specification" --color "D93F0B" --force
+gh label create ready-to-spec --description "Stage 3: Design phase complete or exempt, ready for technical specification" --color "D93F0B" --force
 ```
 
-Add the label to the issue:
+Swap the stage tag (remove `refined`, add `ready-to-spec`):
 
 ```bash
-gh issue edit <id> --add-label "ready-to-spec"
+gh issue edit <id> --remove-label "refined" --add-label "ready-to-spec"
 ```
 
 ### Step 5: Verify

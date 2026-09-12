@@ -92,15 +92,18 @@ gh issue comment <id> --body "### 🔍 Refinement Summary
 - **Estimated Effort**: <S / M / L>"
 ```
 
-2. Update labels:
-- If the issue was labeled `ideation`: swap `ideation` for `refined`:
-  ```bash
-  gh issue edit <id> --remove-label "ideation" --add-label "refined"
-  ```
-- If the issue is a `bug` or `security`: keep the `bug` or `security` label and add `refined`:
-  ```bash
-  gh issue edit <id> --add-label "refined"
-  ```
+2. Update labels (Strict Single Stage Tag Rule):
+Remove the previous stage tag and add `refined`. Do NOT touch any human-assigned priority tag (e.g. `priority`, `priority:high`):
+
+```bash
+gh issue edit <id> --remove-label "ideation" --add-label "refined"
+```
+
+If the issue had a temporary intake tag (like a raw `security` or `bug` tag from audit/reporting), remove it as well so only `refined` (plus any human priority tag) remains:
+
+```bash
+gh issue edit <id> --remove-label "bug,security,ideation" --add-label "refined"
+```
 
 ### Step 6: Verify
 Confirm the updated state of the issue:

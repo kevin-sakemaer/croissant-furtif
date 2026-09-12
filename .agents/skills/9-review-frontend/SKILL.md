@@ -1,9 +1,9 @@
 ---
-name: 10-review-frontend
+name: 9-review-frontend
 description: Conducts an expert code review of frontend Pull Requests according to chosen UI stack standards, assesses responsiveness, accessibility, state management, component isolation, and submits approval or change requests using the GitHub CLI. Use this skill to ensure high frontend quality.
 ---
 
-# Skill: 10-review-frontend
+# Skill: 9-review-frontend
 
 This skill acts as a specialized senior frontend reviewer, assessing pull requests tagged `review-frontend` for UI/UX fidelity, component quality, responsive behavior, accessibility (a11y), state management, and test coverage using the GitHub CLI.
 
@@ -30,7 +30,7 @@ gh pr view <pr-id>
 gh pr diff <pr-id>
 ```
 
-Identify the linked issue from the PR body and check the initial UI/UX design (Step 4) and frontend specs (Step 5):
+Identify the linked issue from the PR body and check the initial UI/UX design (Step 3) and frontend specs (Step 4):
 
 ```bash
 gh issue view <issue-id> --comments
@@ -40,7 +40,7 @@ gh issue view <issue-id> --comments
 Evaluate the code against 6 core frontend standards:
 
 1. **Design & UX Fidelity**:
-   - Does the implementation faithfully reproduce the layouts and wireframes from Step 4?
+   - Does the implementation faithfully reproduce the layouts and wireframes from Step 3?
    - Are all specified interaction states present (Empty, Loading, Error, Success)?
 2. **Component Architecture & Clean Code**:
    - Are components modular, well-scoped, and cohesive?
@@ -89,12 +89,12 @@ gh label create frontend-approved --description "Frontend PR reviewed and approv
 ```bash
 gh pr review <pr-id> --approve --body "### ✅ Frontend Review Approved
 
-- [x] UI/UX design fidelity verified against Step 4 specs.
+- [x] UI/UX design fidelity verified against Step 3 specs.
 - [x] API integration and state management verified.
 - [x] Accessibility (a11y) and responsive layout verified.
 - [x] Automated tests and production build passing.
 
-Ready to merge via \`11-merge-frontend\`."
+Ready to merge via \`10-merge-frontend\`."
 ```
 
 3. Add label to PR:
@@ -109,3 +109,4 @@ Confirm the review status:
 ```bash
 gh pr view <pr-id>
 ```
+The PR is ready for `10-merge-frontend`.

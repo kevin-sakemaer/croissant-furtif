@@ -28,15 +28,15 @@ If the file is still a blank template, prompt the user to complete the architect
 
 ### Step 2: Specialize Backend Skills
 
-#### 1. Update `6-dev-backend/SKILL.md`:
-- Configure Step 3 & Step 4 with the exact build, test, and lint commands:
+#### 1. Update `5-dev-backend/SKILL.md`:
+- Configure Step 4 & Step 5 with the exact build, test, and lint commands:
   - Example (Node/TypeScript): `npm run test:backend`, `npx eslint src/backend`
   - Example (Go): `go test -v ./...`, `golangci-lint run`
   - Example (Python): `pytest tests/`, `ruff check .`
   - Example (Rust): `cargo test`, `cargo clippy`
 - Document database migration commands (e.g. `npx prisma migrate dev`, `alembic upgrade head`, etc.).
 
-#### 2. Update `7-review-backend/SKILL.md`:
+#### 2. Update `6-review-backend/SKILL.md`:
 - Adapt the senior backend review checklist to target idiomatic patterns of the chosen language and framework:
   - **Go**: Goroutine leaks, channel deadlocks, context propagation, error wrapping.
   - **Node/TypeScript**: Event loop blocking, unhandled promise rejections, strict type assertions, connection pooling.
@@ -47,12 +47,12 @@ If the file is still a blank template, prompt the user to complete the architect
 
 ### Step 3: Specialize Frontend Skills
 
-#### 1. Update `9-dev-frontend/SKILL.md`:
+#### 1. Update `8-dev-frontend/SKILL.md`:
 - Configure Step 3 & Step 4 with the exact frontend test, lint, and build commands:
   - Example: `npm test`, `npm run build`, `npm run typecheck`
 - Include conventions for component layout and styling integration (e.g. Tailwind classes, CSS modules, design tokens).
 
-#### 2. Update `10-review-frontend/SKILL.md`:
+#### 2. Update `9-review-frontend/SKILL.md`:
 - Adapt the senior frontend review checklist to the chosen framework:
   - **React/Next.js**: Hook dependency arrays, Server vs Client components (`"use client"`), unnecessary re-renders, Next.js routing conventions.
   - **Vue/Nuxt**: Composition API best practices, reactive props destructuring, SSR hydration mismatches.

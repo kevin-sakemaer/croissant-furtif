@@ -86,7 +86,7 @@ gh issue create \
 - [ ] <Specific fix step 2>
 
 ---
-*Note: This security issue takes priority over standard ideation initiatives during the \`3-selection\` stage.*"
+*Note: This security issue enters the workflow via \`2-refinement\`. A human can apply a priority tag (e.g. \`priority:high\`) to force its implementation ahead of others in \`5-dev-backend\`.*"
 ```
 
 ### Step 6: Summary and Next Actions

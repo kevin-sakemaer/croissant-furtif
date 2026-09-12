@@ -83,13 +83,14 @@ Formulate 3 ideas that directly build upon the existing code without intermediat
 
 ---
 
-### Step 4: Ensure GitHub Labels Exist
-Create or update required labels:
+### Step 4: Ensure GitHub Label Exists
+Create or update the single stage label for this step:
 
 ```bash
-gh label create ideation --description "Idea proposed from VISION.md (architecture or feature)" --color "EDEDED" --force
-gh label create bootstrap-stack --description "Mutually exclusive architecture stack proposals during bootstrap" --color "D4C5F9" --force
+gh label create ideation --description "Stage 1: Idea proposed from VISION.md (architecture or feature)" --color "EDEDED" --force
 ```
+
+> **Strict Tagging Rule**: An issue must carry **exactly ONE stage tag at a time** (`ideation` -> `refined` -> `ready-to-spec` -> `spec-approved` -> `dev-backend` -> `dev-frontend`). The only other permitted tags are human-assigned priority tags.
 
 ---
 
@@ -97,12 +98,12 @@ gh label create bootstrap-stack --description "Mutually exclusive architecture s
 Publish each proposal as a separate issue using `gh issue create`:
 
 #### In Bootstrap Mode:
-Tag each architecture option with both `ideation` and `bootstrap-stack` so that selecting one in `3-selection` automatically closes the competing alternatives:
+Issues represent mutually exclusive architecture choices. Use the prefix `[Bootstrap Architecture]` in the title and the single stage tag `ideation`:
 
 ```bash
 gh issue create \
-  --title "Architecture & Stack: <Option Name>" \
-  --label "ideation,bootstrap-stack" \
+  --title "[Bootstrap Architecture] <Option Name>" \
+  --label "ideation" \
   --body "## 🏗️ Architecture & Technology Proposal
 **Focus**: <Summary of the stack approach>
 

@@ -1,11 +1,11 @@
 ---
-name: 11-merge-frontend
+name: 10-merge-frontend
 description: Merges approved frontend Pull Requests into main, cleans up the associated Git worktree, verifies the automatic closure of the linked GitHub issue, and marks the feature delivery cycle as complete using GitHub CLI. Use this skill when finalizing full-stack feature delivery.
 ---
 
-# Skill: 11-merge-frontend
+# Skill: 10-merge-frontend
 
-This skill verifies that a frontend Pull Request is approved (`label: frontend-approved`), checks CI status, merges the PR into `main` using GitHub CLI (which automatically closes the parent issue via `Closes #<id>`), removes the Git worktree, and verifies the final closed state of the issue.
+This skill verifies that a frontend Pull Request is approved (`label: frontend-approved`), checks CI status, merges the PR into `main` using GitHub CLI (which automatically closes the parent issue via `Closes #<id>`), removes the Git worktree, and verifies that the parent issue is closed without orphaned tags.
 
 > **Constraint**: Uses exclusively standard `git` and GitHub CLI (`gh`) commands. No custom scripts.
 
@@ -37,7 +37,7 @@ Execute the merge and delete the remote branch:
 gh pr merge <pr-id> --squash --delete-branch
 ```
 
-Because the PR body contains `Closes #<id>`, GitHub will automatically close the linked issue upon merging.
+Because the PR body contains `Closes #<id>`, GitHub automatically closes the linked issue upon merging.
 
 ### Step 4: Synchronize Local Repository
 Update local `main` branch:
@@ -56,11 +56,17 @@ git worktree remove .worktrees/issue-<id>-frontend --force
 git worktree prune
 ```
 
-### Step 6: Verify Issue Closure
+### Step 6: Verify Issue Closure & Clean Tags
 Confirm that the linked issue has been closed automatically:
 
 ```bash
 gh issue view <id>
+```
+
+If the issue still has any lingering stage tag (e.g. `dev-frontend`), clean it up so only closed status remains:
+
+```bash
+gh issue edit <id> --remove-label "dev-frontend"
 ```
 
 Post a final confirmation comment on the closed issue:

@@ -1,9 +1,9 @@
 ---
-name: 7-review-backend
+name: 6-review-backend
 description: Conducts an expert code review of backend Pull Requests according to the chosen stack best practices, inspects diffs, evaluates security, performance, test coverage, and submits approval or change requests using the GitHub CLI. Use this skill to ensure high code quality on backend PRs.
 ---
 
-# Skill: 7-review-backend
+# Skill: 6-review-backend
 
 This skill acts as a specialized senior backend reviewer for the chosen project stack, rigorously examining diffs on PRs labeled `review-backend`, ensuring adherence to specifications, security, performance, and test coverage, and recording the review verdict on GitHub.
 
@@ -40,7 +40,7 @@ gh issue view <issue-id> --comments
 Evaluate the code against 6 core backend standards:
 
 1. **Specification Adherence**:
-   - Are all endpoints, routes, methods, and payloads identical to the specs written in Step 5?
+   - Are all endpoints, routes, methods, and payloads identical to the specs written in Step 4?
    - Are all response codes and error formats aligned?
 2. **Security & Input Validation**:
    - Is all external input strictly validated and sanitized?
@@ -89,12 +89,12 @@ gh label create backend-approved --description "Backend PR reviewed and approved
 ```bash
 gh pr review <pr-id> --approve --body "### ✅ Backend Review Approved
 
-- [x] Conforms to technical specifications (Step 5).
+- [x] Conforms to technical specifications (Step 4).
 - [x] Input validation and error handling verified.
 - [x] Security and performance checks satisfied.
 - [x] Automated test coverage verified.
 
-Ready to merge via \`8-merge-backend\`."
+Ready to merge via \`7-merge-backend\`."
 ```
 
 3. Add label to PR:
@@ -109,3 +109,4 @@ Confirm the review status:
 ```bash
 gh pr view <pr-id>
 ```
+The PR is ready for `7-merge-backend`.

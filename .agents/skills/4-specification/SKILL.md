@@ -1,11 +1,13 @@
 ---
-name: 5-specification
-description: Writes comprehensive technical specifications for ready-to-spec issues, cleanly decoupling Backend and Frontend scopes, and marks the issue as 'spec-approved'. Use this skill to define APIs, data models, component architectures, and test criteria before coding.
+name: 4-specification
+description: Writes comprehensive technical specifications for ready-to-spec issues, cleanly decoupling Backend and Frontend scopes, and advances the issue to 'spec-approved' by swapping the stage tag. Use this skill to define APIs, data models, component architectures, and test criteria before coding.
 ---
 
-# Skill: 5-specification
+# Skill: 4-specification
 
 This skill takes an issue in `ready-to-spec` state, writes exhaustive technical specifications decoupled into two distinct parts (**Backend** and **Frontend**), and advances the issue to `spec-approved`.
+
+> **Strict Tagging Rule**: An issue must carry **exactly ONE stage tag at a time** (`ideation` -> `refined` -> `ready-to-spec` -> `spec-approved` -> `dev-backend` -> `dev-frontend`). The previous stage tag (`ready-to-spec`) is removed when adding `spec-approved`.
 
 > **Constraint**: Uses exclusively standard `git` and GitHub CLI (`gh`) commands. No custom scripts.
 
@@ -44,7 +46,7 @@ Construct the specification with two distinct sections so they can be handled in
 - **Component Architecture**: Component tree, hierarchy, and props definitions.
 - **State Management**: Local state, global store, async data fetching, and cache invalidation.
 - **API Integration**: How endpoints specified in Part A are consumed and handled.
-- **UI State Bindings**: Mapping API states (loading, success, error) to the UI components defined in Step 4.
+- **UI State Bindings**: Mapping API states (loading, success, error) to the UI components defined in Step 3.
 - **Client-Side Validation**: Form rules, instant feedback, masking.
 - **Testing Requirements**: Component rendering tests, user event tests.
 
@@ -52,10 +54,10 @@ Construct the specification with two distinct sections so they can be handled in
 Create or update the `spec-approved` label:
 
 ```bash
-gh label create spec-approved --description "Specifications written and approved, ready for backend development" --color "0E8A16" --force
+gh label create spec-approved --description "Stage 4: Specifications written and approved, ready for backend development" --color "0E8A16" --force
 ```
 
-### Step 4: Publish Specifications & Transition Labels
+### Step 4: Publish Specifications & Single Stage Tag Transition
 Post the complete specification as a structured comment on the issue:
 
 ```bash
@@ -81,7 +83,7 @@ gh issue comment <id> --body "### 📐 Technical Specifications
 - **Test Plan**: <Component & interaction tests required>"
 ```
 
-Update the labels on the issue:
+Swap the stage tag (remove `ready-to-spec`, add `spec-approved`):
 
 ```bash
 gh issue edit <id> --remove-label "ready-to-spec" --add-label "spec-approved"
@@ -93,4 +95,4 @@ Confirm the updated status:
 ```bash
 gh issue view <id>
 ```
-The issue is now ready for `6-dev-backend`.
+The issue is now ready for `5-dev-backend`.
