@@ -76,8 +76,8 @@ Create or update the `selected` label:
 gh label create selected --description "Prioritized issue selected for active delivery" --color "5319E7" --force
 ```
 
-### Step 4: Mark Selected Issue
-Apply the `selected` label and post a tracking comment documenting the priority tier:
+### Step 4: Mark Selected Issue & Handle Mutually Exclusive Choices
+1. Apply the `selected` label and post a tracking comment documenting the priority tier:
 
 ```bash
 gh issue edit <id> --add-label "selected"
@@ -87,9 +87,23 @@ gh issue comment <id> --body "🎯 **Selected for Active Development**
 - **Next Step**: Skill \`4-design\` (if UI/UX is required) or \`5-specification\`."
 ```
 
+2. **Automated Closing of Competing Bootstrap Proposals**:
+If the selected issue carries the `bootstrap-stack` label, the other proposals are mutually exclusive alternatives. Close all other open issues labeled `bootstrap-stack`:
+
+```bash
+# List competing open bootstrap issues
+gh issue list --label "bootstrap-stack" --state open --json number,title
+
+# For each other issue ID (<other_id> != <id>), close it with explanation:
+gh issue close <other_id> --comment "Closed in favor of selected architecture #<id>." --reason "not planned"
+```
+
+---
+
 ### Step 5: Verify
-Confirm the updated issue status:
+Confirm the updated issue status and closed alternatives:
 
 ```bash
 gh issue view <id>
+gh issue list --label "bootstrap-stack"
 ```
