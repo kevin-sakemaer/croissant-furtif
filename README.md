@@ -6,6 +6,21 @@ Ce workflow utilise **exclusivement les commandes CLI standard `git` et GitHub (
 
 ---
 
+## 🚀 Phases du Projet : Bootstrap vs Évolution
+
+Le cycle s'adapte à la maturité du dépôt :
+
+1. **Phase 0 — Démarrage / Bootstrap (Dépôt Neuf)** :
+   - `1-ideation` détecte l'absence de stack définie dans [`ARCHITECTURE.md`](./ARCHITECTURE.md).
+   - Il propose **3 architectures et choix de technologies complètes** (Backend, DB, Frontend, Tooling) alignées avec [`VISION.md`](./VISION.md).
+   - L'équipe sélectionne, raffine et valide le choix.
+   - Le skill [`specialize-skills`](.agents/skills/specialize-skills/SKILL.md) configure ensuite les skills de dev, review et sécurité avec les commandes et checklists pointues de la stack retenue.
+2. **Phase 1 — Évolution Continue (Socle Établi)** :
+   - `1-ideation` propose des fonctionnalités métier, améliorations UX et refactorings.
+   - Les développeurs et reviewers virtuels exécutent les tâches avec une expertise ultra-ciblée.
+
+---
+
 ## 🚦 Règle de Priorité Stricte
 
 Les issues en attente de développement sont traitées selon un ordre hiérarchique strict :
@@ -41,6 +56,7 @@ flowchart TD
     S9 -->|Worktree + PR| S10[10-review-frontend]
     S10 -->|Approval| S11[11-merge-frontend]
     S11 -->|Issue close automatiquement| Done([Cycle Terminé])
+    Done -.->|Si choix de stack| SpecSkills([specialize-skills])
 ```
 
 ---
@@ -51,8 +67,9 @@ Toutes les compétences sont situées dans `.agents/skills/` :
 
 | Étape | Skill | Objectif | Outils CLI |
 | :--- | :--- | :--- | :--- |
+| **Setup** | [`specialize-skills`](.agents/skills/specialize-skills/SKILL.md) | Spécialise les skills selon la stack définie dans `ARCHITECTURE.md`. | `git diff`, `git commit` |
 | **Audit** | [`audit-security`](.agents/skills/audit-security/SKILL.md) | Audit de sécurité périodique (secrets, failles, dépendances) et création d'issues `security`. | `git grep`, `git log`, `gh issue create` |
-| **1** | [`1-ideation`](.agents/skills/1-ideation/SKILL.md) | Propose 3 idées variées issues de `VISION.md` sous forme d'issues GitHub (`label: ideation`). | `gh issue create`, `gh label create` |
+| **1** | [`1-ideation`](.agents/skills/1-ideation/SKILL.md) | Propose 3 idées variées issues de `VISION.md` (options de stack en phase bootstrap). | `gh issue create`, `gh label create` |
 | **2** | [`2-refinement`](.agents/skills/2-refinement/SKILL.md) | Cadrage approfondi des bugs, failles ou idées et qualification en `refined`. | `gh issue list`, `gh issue edit` |
 | **3** | [`3-selection`](.agents/skills/3-selection/SKILL.md) | Sélection par priorité stricte (`bug > security > ideation`) et passage en `selected`. | `gh issue list`, `gh issue edit` |
 | **4** | [`4-design`](.agents/skills/4-design/SKILL.md) | Conception UI/UX si nécessaire (parcours, états, mockups) et passage en `ready-to-spec`. | `gh issue comment`, `gh issue edit` |
