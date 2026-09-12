@@ -1,0 +1,21 @@
+# Worktrees
+.worktrees/
+
+# OS and Editors
+.DS_Store
+.vscode/
+.idea/
+
+# Node / Dependencies
+node_modules/
+dist/
+build/
+.cache/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local
